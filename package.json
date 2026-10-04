@@ -1,0 +1,16 @@
+{
+  "name": "smart-parking-management-system",
+  "version": "1.0.0",
+  "description": "Smart Parking Management System",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.2",
+    "express": "^4.21.2",
+    "express-session": "^1.1.0",
+    "sqlite3": "^5.1.7"
+  }
+}

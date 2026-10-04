@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container navbar">
+        <a class="brand" href="/"><div class="brand-mark">P</div><span>park<span class="brand-light">wise</span></span></a>
+        <nav class="nav-links">
+          <a href="/admin/dashboard">Dashboard</a>
+          <a href="/admin/areas">Areas</a>
+          <a href="/admin/slots">Slots</a>
+          <a href="/admin/occupancy">Occupancy</a>
+          <a href="/admin/reservations">Reservations</a>
+          <a href="/admin/payments">Payments</a>
+          <a href="/admin/reports">Reports</a>
+          <a href="/logout" class="link-button">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="page-header">
+      <div class="container"><h1>Reservation management</h1></div>
+    </section>
+
+    <main class="container page-panel">
+      <div class="list-card">
+        <table>
+          <thead>
+            <tr><th>User</th><th>Area</th><th>Slot</th><th>Status</th><th>Fee</th></tr>
+          </thead>
+          <tbody>
+            <% reservations.forEach((reservation) => { %>
+              <tr>
+                <td><%= reservation.user_name %></td>
+                <td><%= reservation.area_name %></td>
+                <td><%= reservation.slot_number %></td>
+                <td><span class="status-badge status-<%= reservation.status %>"><%= reservation.status %></span></td>
+                <td><%= toMoney(reservation.fee) %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </body>
+</html>

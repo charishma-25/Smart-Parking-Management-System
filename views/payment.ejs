@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container navbar">
+        <a class="brand" href="/"><div class="brand-mark">P</div><span>park<span class="brand-light">wise</span></span></a>
+        <nav class="nav-links">
+          <a href="/user/dashboard">Dashboard</a>
+          <a href="/find-parking">Find Parking</a>
+          <a href="/reservations">Reservations</a>
+          <a href="/notifications">Notifications</a>
+          <a href="/profile">Profile</a>
+          <a href="/logout" class="link-button">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container page-panel">
+      <div class="list-card">
+        <h2>Payment</h2>
+        <p><strong>Reservation code:</strong> <%= reservation.reservation_code %></p>
+        <p><strong>Area:</strong> <%= reservation.area_name %></p>
+        <p><strong>Slot:</strong> <%= reservation.slot_number %></p>
+        <p><strong>Total due:</strong> <%= toMoney(reservation.fee) %></p>
+
+        <form id="payment-form">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="method">Payment method</label>
+              <select id="method" name="method">
+                <option value="card">Credit card</option>
+                <option value="wallet">Digital wallet</option>
+                <option value="bank">Bank transfer</option>
+              </select>
+            </div>
+            <input type="hidden" name="reservationId" value="<%= reservation.id %>" />
+            <button type="submit" class="primary-button">Pay now</button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script>
+      const form = document.getElementById('payment-form');
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const payload = Object.fromEntries(new FormData(form));
+        const response = await fetch('/api/payments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (!result.success) {
+          alert(result.message || 'Unable to process payment.');
+          return;
+        }
+        window.location.href = result.redirect;
+      });
+    </script>
+  </body>
+</html>

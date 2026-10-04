@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container navbar">
+        <a class="brand" href="/"><div class="brand-mark">P</div><span>park<span class="brand-light">wise</span></span></a>
+        <nav class="nav-links">
+          <a href="/user/dashboard">Dashboard</a>
+          <a href="/find-parking">Find Parking</a>
+          <a href="/reservations">Reservations</a>
+          <a href="/notifications">Notifications</a>
+          <a href="/profile">Profile</a>
+          <a href="/logout" class="link-button">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="page-header">
+      <div class="container">
+        <h1><%= area.name %></h1>
+      </div>
+    </section>
+
+    <main class="container page-panel">
+      <div class="list-card" style="margin-bottom: 24px;">
+        <h3>Area information</h3>
+        <p><strong>Location:</strong> <%= area.location %></p>
+        <p><strong>Address:</strong> <%= area.address %></p>
+        <p><strong>Hourly rate:</strong> <%= toMoney(area.hourly_rate) %></p>
+        <p><%= area.description %></p>
+      </div>
+
+      <div class="list-card">
+        <h3>Available parking slots</h3>
+        <div class="slot-grid">
+          <% slots.forEach((slot) => { %>
+            <div class="slot-box <%= slot.status %>">
+              <h4><%= slot.slot_number %></h4>
+              <div class="tag"><%= slot.slot_type %></div>
+              <div class="status-badge status-<%= slot.status %>" style="margin-top: 8px;"><%= slot.status %></div>
+              <% if (slot.status !== 'occupied') { %>
+                <a class="small-button primary-button" style="margin-top: 12px; display: inline-block;" href="/reserve?areaId=<%= area.id %>&slotId=<%= slot.id %>">Reserve</a>
+              <% } %>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

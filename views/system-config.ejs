@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container navbar">
+        <a class="brand" href="/"><div class="brand-mark">P</div><span>park<span class="brand-light">wise</span></span></a>
+        <nav class="nav-links">
+          <a href="/system/dashboard">Dashboard</a>
+          <a href="/system/users">Users</a>
+          <a href="/system/admins">Administrators</a>
+          <a href="/system/config">Config</a>
+          <a href="/logout" class="link-button">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="page-header">
+      <div class="container"><h1>System configuration</h1></div>
+    </section>
+
+    <main class="container page-panel">
+      <div class="list-card">
+        <table>
+          <thead>
+            <tr><th>Setting</th><th>Value</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <% settings.forEach((setting) => { %>
+              <tr>
+                <td><%= setting.setting_key %></td>
+                <td><%= setting.setting_value %></td>
+                <td><%= setting.description %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </body>
+</html>

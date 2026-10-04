@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101c1a" />
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="landing-page">
+    <header class="landing-header">
+      <div class="container landing-nav">
+        <a class="landing-brand" href="/" aria-label="Smart Parking home">
+          <span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>park<span class="brand-light">wise</span></span>
+        </a>
+        <nav class="landing-links" aria-label="Main navigation">
+          <a href="#how-it-works">How it works</a>
+          <a href="#features">Why Parkwise</a>
+          <% if (user) { %>
+            <a class="landing-login" href="/dashboard">Dashboard <span aria-hidden="true">↗</span></a>
+          <% } else { %>
+            <a class="landing-login" href="/login">Log in</a>
+            <a class="landing-nav-cta" href="/register">Create account <span aria-hidden="true">↗</span></a>
+          <% } %>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="landing-hero">
+        <div class="container landing-hero-grid">
+          <div class="landing-copy">
+            <div class="landing-kicker"><span class="kicker-dot"></span> A better way to arrive</div>
+            <h1>Good trips<br />start with <em>a spot.</em></h1>
+            <p>Skip the circling. Find a space, choose your time, and get on with your day.</p>
+            <div class="landing-actions">
+              <a class="landing-primary" href="<%= user ? '/find-parking' : '/login' %>">Find your parking<span aria-hidden="true">↗</span></a>
+              <span class="landing-action-note">Reserve in a few simple steps</span>
+            </div>
+            <div class="landing-proof"><span class="proof-icon">✓</span><span>Clear hourly rates</span><b></b><span>Instant booking updates</span></div>
+          </div>
+
+          <div class="map-scene" aria-label="Illustrated city map showing available parking">
+            <div class="map-label"><span class="map-live-dot"></span> YOUR CITY, MADE EASIER</div>
+            <div class="map-grid-lines" aria-hidden="true">
+              <span class="road road-a"></span><span class="road road-b"></span><span class="road road-c"></span><span class="road road-d"></span><span class="road road-e"></span>
+              <span class="block block-a"></span><span class="block block-b"></span><span class="block block-c"></span><span class="block block-d"></span><span class="block block-e"></span><span class="block block-f"></span>
+              <span class="park-patch">CITY<br />GARDEN</span>
+            </div>
+            <div class="map-street street-one">MARKET STREET</div><div class="map-street street-two">RIVER ROAD</div>
+            <div class="map-pin pin-one"><span>P</span><b></b></div>
+            <div class="map-pin pin-two"><span>P</span><b></b></div>
+            <div class="map-pin pin-three"><span>P</span><b></b></div>
+            <div class="map-you"><span></span>YOU ARE HERE</div>
+            <div class="map-spot-card">
+              <div class="spot-card-top"><span class="spot-icon">P</span><span class="spot-open"><i></i> SPACES AVAILABLE</span></div>
+              <strong>City Center Plaza</strong>
+              <span class="spot-distance">Market Street <b>·</b> 4 min walk</span>
+              <div class="spot-card-bottom"><span><strong>₹8</strong> / hour</span><a href="<%= user ? '/find-parking' : '/login' %>" aria-label="Explore parking">↗</a></div>
+            </div>
+            <div class="map-caption"><span>01 / FIND A SPACE</span><span>LESS SEARCHING. MORE LIVING.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="landing-ribbon" aria-label="Find. Reserve. Arrive.">
+        <div class="container ribbon-inner"><span>FIND YOUR SPACE</span><b>✳</b><span>RESERVE WITH EASE</span><b>✳</b><span>ARRIVE ON TIME</span><b>✳</b><span>FIND YOUR SPACE</span></div>
+      </div>
+
+      <section class="landing-section container" id="how-it-works">
+        <div class="section-intro"><div><span class="landing-overline">PARKING, WITHOUT THE DETOUR</span><h2>From search to parked.<br /><em>It’s that simple.</em></h2></div><p>Everything you need to plan a smoother arrival, all in one place.</p></div>
+        <div class="landing-steps">
+          <article class="landing-step"><span class="step-index">01</span><span class="step-mark mark-search" aria-hidden="true">⌕</span><h3>Find your fit</h3><p>Browse parking areas and check availability before you set off.</p><span class="step-rule"></span></article>
+          <article class="landing-step"><span class="step-index">02</span><span class="step-mark mark-time" aria-hidden="true">◷</span><h3>Choose your time</h3><p>Pick a space and set the hours that work for your plans.</p><span class="step-rule"></span></article>
+          <article class="landing-step"><span class="step-index">03</span><span class="step-mark mark-arrive" aria-hidden="true">↗</span><h3>Arrive with ease</h3><p>Confirm your reservation and keep the details close at hand.</p><span class="step-rule"></span></article>
+        </div>
+      </section>
+
+      <section class="landing-why" id="features">
+        <div class="container why-grid">
+          <div><span class="landing-overline">A LITTLE MORE PEACE OF MIND</span><h2>Your day has<br />better things<br />to do than <em>circle.</em></h2><a class="why-link" href="<%= user ? '/find-parking' : '/login' %>">Make parking the easy part <span>↗</span></a></div>
+          <div class="why-cards">
+            <article class="why-card"><span class="why-number">01</span><div class="why-icon">₹</div><h3>Know the rate upfront</h3><p>See hourly pricing before you book, so there are no surprises.</p></article>
+            <article class="why-card"><span class="why-number">02</span><div class="why-icon">✓</div><h3>A space with your name on it</h3><p>Reserve a spot ahead of time and spend less time searching.</p></article>
+            <article class="why-card"><span class="why-number">03</span><div class="why-icon">↻</div><h3>Your plans, in one place</h3><p>Check reservations and updates whenever you need them.</p></article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="landing-footer" id="about">
+      <div class="container footer-main"><div><a class="landing-brand footer-brand" href="/"><span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i></span><span>park<span class="brand-light">wise</span></span></a><p>A calmer way to park<br />and get where you’re going.</p></div><div class="footer-nav"><span>TAKE A LOOK</span><a href="#how-it-works">How it works</a><a href="#features">Why Parkwise</a></div><div class="footer-nav"><span>YOUR ACCOUNT</span><% if (user) { %><a href="/dashboard">Dashboard</a><a href="/find-parking">Find parking</a><% } else { %><a href="/login">Log in</a><a href="/register">Create account</a><a href="/admin/login">Administrator login</a><% } %></div></div>
+      <div class="container footer-bottom"><span>© 2026 Parkwise</span><span>MADE FOR THE WAY THERE.</span></div>
+    </footer>
+  </body>
+</html>

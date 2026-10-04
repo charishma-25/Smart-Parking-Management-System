@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container navbar">
+        <a class="brand" href="/"><div class="brand-mark">P</div><span>park<span class="brand-light">wise</span></span></a>
+        <nav class="nav-links">
+          <a href="/admin/dashboard">Dashboard</a>
+          <a href="/admin/areas">Areas</a>
+          <a href="/admin/slots">Slots</a>
+          <a href="/admin/occupancy">Occupancy</a>
+          <a href="/admin/reservations">Reservations</a>
+          <a href="/admin/payments">Payments</a>
+          <a href="/admin/reports">Reports</a>
+          <a href="/logout" class="link-button">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="page-header">
+      <div class="container"><h1>Parking area management</h1></div>
+    </section>
+
+    <main class="container page-panel">
+      <div class="list-card">
+        <h3>Add new parking area</h3>
+        <form id="area-form" class="form-grid">
+          <div class="form-field"><label>Name</label><input name="name" required /></div>
+          <div class="form-field"><label>Location</label><input name="location" required /></div>
+          <div class="form-field"><label>Address</label><input name="address" /></div>
+          <div class="form-field"><label>Description</label><textarea name="description"></textarea></div>
+          <div class="form-row">
+            <div class="form-field" style="flex: 1;"><label>Hourly rate</label><input type="number" step="0.01" name="hourlyRate" required /></div>
+            <div class="form-field" style="flex: 1;"><label>Total slots</label><input type="number" name="totalSlots" required /></div>
+          </div>
+          <button type="submit" class="primary-button">Save area</button>
+        </form>
+      </div>
+
+      <div class="list-card" style="margin-top: 24px;">
+        <table>
+          <thead><tr><th>Name</th><th>Location</th><th>Rate</th><th>Slots</th><th>Actions</th></tr></thead>
+          <tbody>
+            <% areas.forEach((area) => { %>
+              <tr>
+                <td><%= area.name %></td>
+                <td><%= area.location %></td>
+                <td><%= toMoney(area.hourly_rate) %></td>
+                <td><%= area.total_slots %></td>
+                <td><button class="danger-button small-button" data-area-id="<%= area.id %>">Delete</button></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <script>
+      const form = document.getElementById('area-form');
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const payload = Object.fromEntries(new FormData(form));
+        const response = await fetch('/api/admin/areas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (!result.success) {
+          alert(result.message || 'Unable to create area.');
+          return;
+        }
+        window.location.reload();
+      });
+
+      document.querySelectorAll('[data-area-id]').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const confirmed = window.confirm('Delete this parking area?');
+          if (!confirmed) return;
+          const response = await fetch(`/api/admin/areas/${button.dataset.areaId}`, { method: 'DELETE' });
+          const result = await response.json();
+          if (!result.success) {
+            alert(result.message || 'Unable to remove area.');
+            return;
+          }
+          window.location.reload();
+        });
+      });
+    </script>
+  </body>
+</html>

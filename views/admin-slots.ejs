@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container navbar">
+        <a class="brand" href="/"><div class="brand-mark">P</div><span>park<span class="brand-light">wise</span></span></a>
+        <nav class="nav-links">
+          <a href="/admin/dashboard">Dashboard</a>
+          <a href="/admin/areas">Areas</a>
+          <a href="/admin/slots">Slots</a>
+          <a href="/admin/occupancy">Occupancy</a>
+          <a href="/admin/reservations">Reservations</a>
+          <a href="/admin/payments">Payments</a>
+          <a href="/admin/reports">Reports</a>
+          <a href="/logout" class="link-button">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="page-header">
+      <div class="container"><h1>Parking slot management</h1></div>
+    </section>
+
+    <main class="container page-panel">
+      <div class="list-card" style="margin-bottom: 24px;">
+        <h3>Add slot</h3>
+        <form id="slot-form" class="form-grid">
+          <div class="form-row">
+            <div class="form-field" style="flex: 1;">
+              <label>Area</label>
+              <select name="areaId" required>
+                <% areas.forEach((area) => { %>
+                  <option value="<%= area.id %>"><%= area.name %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="form-field" style="flex: 1;">
+              <label>Slot number</label>
+              <input name="slotNumber" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field" style="flex: 1;">
+              <label>Type</label>
+              <select name="slotType">
+                <option value="car">car</option>
+                <option value="motorcycle">motorcycle</option>
+                <option value="ev">ev</option>
+              </select>
+            </div>
+            <div class="form-field" style="flex: 1;">
+              <label>Status</label>
+              <select name="status">
+                <option value="available">available</option>
+                <option value="reserved">reserved</option>
+                <option value="occupied">occupied</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="primary-button" <%= areas.length ? '' : 'disabled' %>>Add slot</button>
+          <% if (!areas.length) { %><p class="form-hint">Create a parking area before adding slots.</p><% } %>
+        </form>
+      </div>
+
+      <div class="list-card">
+        <table>
+          <thead>
+            <tr><th>Area</th><th>Slot</th><th>Type</th><th>Status</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            <% slots.forEach((slot) => { %>
+              <tr>
+                <td><%= slot.area_name %></td>
+                <td><%= slot.slot_number %></td>
+                <td><%= slot.slot_type %></td>
+                <td><span class="status-badge status-<%= slot.status %>"><%= slot.status %></span></td>
+                <td>
+                  <label class="visually-hidden" for="slot-status-<%= slot.id %>">Status for <%= slot.slot_number %></label>
+                  <select id="slot-status-<%= slot.id %>" class="inline-select" data-slot-status="<%= slot.id %>">
+                    <% ['available', 'reserved', 'occupied'].forEach((status) => { %>
+                      <option value="<%= status %>" <%= slot.status === status ? 'selected' : '' %>><%= status %></option>
+                    <% }) %>
+                  </select>
+                  <button class="secondary-button small-button" data-slot-id="<%= slot.id %>" data-action="update">Save status</button>
+                  <button class="danger-button small-button" data-slot-id="<%= slot.id %>" data-action="delete">Delete</button>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <script>
+      const slotForm = document.getElementById('slot-form');
+      slotForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const payload = Object.fromEntries(new FormData(slotForm));
+        const response = await fetch('/api/admin/slots', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (!result.success) {
+          alert(result.message || 'Unable to add slot.');
+          return;
+        }
+        window.location.reload();
+      });
+
+      document.querySelectorAll('[data-action="delete"]').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const confirmed = window.confirm('Delete this slot?');
+          if (!confirmed) return;
+          const response = await fetch(`/api/admin/slots/${button.dataset.slotId}`, { method: 'DELETE' });
+          const result = await response.json();
+          if (!result.success) {
+            alert(result.message || 'Unable to delete slot.');
+            return;
+          }
+          window.location.reload();
+        });
+      });
+
+      document.querySelectorAll('[data-action="update"]').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const newStatus = document.querySelector(`[data-slot-status="${button.dataset.slotId}"]`).value;
+          const response = await fetch(`/api/admin/slots/${button.dataset.slotId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: newStatus })
+          });
+          const result = await response.json();
+          if (!result.success) {
+            alert(result.message || 'Unable to update slot.');
+            return;
+          }
+          window.location.reload();
+        });
+      });
+    </script>
+  </body>
+</html>

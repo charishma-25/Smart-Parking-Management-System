@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container navbar">
+        <a class="brand" href="/"><div class="brand-mark">P</div><span>park<span class="brand-light">wise</span></span></a>
+        <nav class="nav-links">
+          <a href="/user/dashboard">Dashboard</a>
+          <a href="/find-parking">Find Parking</a>
+          <a href="/reservations">Reservations</a>
+          <a href="/notifications">Notifications</a>
+          <a href="/profile">Profile</a>
+          <a href="/logout" class="link-button">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container page-panel">
+      <div class="list-card">
+        <h2>Reservation summary</h2>
+        <p><strong>Area:</strong> <%= area.name %></p>
+        <p><strong>Slot:</strong> <%= slot.slot_number %></p>
+        <p><strong>Hourly rate:</strong> <%= toMoney(area.hourly_rate) %></p>
+
+        <form id="reserve-form">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="startTime">Start time</label>
+              <input id="startTime" name="startTime" type="datetime-local" required />
+            </div>
+            <div class="form-field">
+              <label for="endTime">End time</label>
+              <input id="endTime" name="endTime" type="datetime-local" required />
+            </div>
+            <input type="hidden" name="areaId" value="<%= area.id %>" />
+            <input type="hidden" name="slotId" value="<%= slot.id %>" />
+            <button type="submit" class="primary-button">Confirm reservation</button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script>
+      const form = document.getElementById('reserve-form');
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const payload = Object.fromEntries(new FormData(form));
+        const response = await fetch('/api/reservations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (!result.success) {
+          alert(result.message || 'Unable to create reservation.');
+          return;
+        }
+        window.location.href = result.next;
+      });
+    </script>
+  </body>
+</html>

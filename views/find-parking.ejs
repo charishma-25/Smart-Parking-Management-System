@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container navbar">
+        <a class="brand" href="/"><div class="brand-mark">P</div><span>park<span class="brand-light">wise</span></span></a>
+        <nav class="nav-links">
+          <a href="/user/dashboard">Dashboard</a>
+          <a href="/find-parking">Find Parking</a>
+          <a href="/reservations">Reservations</a>
+          <a href="/notifications">Notifications</a>
+          <a href="/profile">Profile</a>
+          <a href="/logout" class="link-button">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="page-header">
+      <div class="container">
+        <h1>Find Parking</h1>
+      </div>
+    </section>
+
+    <main class="container page-panel">
+      <div class="area-grid">
+        <% areas.forEach((area) => { %>
+          <div class="area-card">
+            <h3><%= area.name %></h3>
+            <p><%= area.description %></p>
+            <div class="area-meta">
+              <span><%= area.location %></span>
+              <span><%= toMoney(area.hourly_rate) %>/hour</span>
+            </div>
+            <div class="area-meta">
+              <span><%= area.address %></span>
+              <span>Slots: <%= area.total_slots %></span>
+            </div>
+            <a class="primary-button" href="/parking/<%= area.id %>">View details</a>
+          </div>
+        <% }) %>
+      </div>
+    </main>
+  </body>
+</html>

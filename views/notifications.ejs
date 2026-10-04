@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container navbar">
+        <a class="brand" href="/"><div class="brand-mark">P</div><span>park<span class="brand-light">wise</span></span></a>
+        <nav class="nav-links">
+          <a href="/user/dashboard">Dashboard</a>
+          <a href="/find-parking">Find Parking</a>
+          <a href="/reservations">Reservations</a>
+          <a href="/notifications">Notifications</a>
+          <a href="/profile">Profile</a>
+          <a href="/logout" class="link-button">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="page-header">
+      <div class="container"><h1>Notifications</h1></div>
+    </section>
+
+    <main class="container page-panel">
+      <div class="list-card">
+        <% if (!notifications.length) { %>
+          <p>No notifications available.</p>
+        <% } else { %>
+          <ul>
+            <% notifications.forEach((notification) => { %>
+              <li><strong><%= notification.title %></strong> — <%= notification.message %> <span class="status-badge status-<%= notification.type %>"><%= notification.type %></span></li>
+            <% }) %>
+          </ul>
+        <% } %>
+      </div>
+    </main>
+  </body>
+</html>

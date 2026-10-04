@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="auth-shell">
+      <div class="auth-card">
+        <div class="brand" style="margin-bottom: 12px;">
+          <div class="brand-mark">P</div>
+          Smart Parking
+        </div>
+        <h1>Page not found</h1>
+        <div class="auth-meta"><%= typeof error !== 'undefined' && error ? error : 'The page you were looking for is not available.' %></div>
+        <a href="/" class="primary-button">Return home</a>
+      </div>
+    </div>
+  </body>
+</html>

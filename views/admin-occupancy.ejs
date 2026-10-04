@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container navbar">
+        <a class="brand" href="/"><div class="brand-mark">P</div><span>park<span class="brand-light">wise</span></span></a>
+        <nav class="nav-links">
+          <a href="/admin/dashboard">Dashboard</a>
+          <a href="/admin/areas">Areas</a>
+          <a href="/admin/slots">Slots</a>
+          <a href="/admin/occupancy">Occupancy</a>
+          <a href="/admin/reservations">Reservations</a>
+          <a href="/admin/payments">Payments</a>
+          <a href="/admin/reports">Reports</a>
+          <a href="/logout" class="link-button">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="page-header">
+      <div class="container"><h1>Occupancy monitoring</h1></div>
+    </section>
+
+    <main class="container page-panel">
+      <div class="list-card">
+        <table>
+          <thead>
+            <tr><th>Area</th><th>Total</th><th>Available</th><th>Occupied</th></tr>
+          </thead>
+          <tbody>
+            <% occupancy.forEach((item) => { %>
+              <tr>
+                <td><%= item.name %></td>
+                <td><%= item.total %></td>
+                <td><%= item.available %></td>
+                <td><%= item.occupied %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </body>
+</html>
