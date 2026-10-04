@@ -25,7 +25,7 @@ function hashPassword(password) {
 
 function toMoney(value) {
   const amount = new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number(value || 0));
-  return `₹${amount}`;
+  return `\u20B9${amount}`;
 }
 
 function run(sql, params = []) {
